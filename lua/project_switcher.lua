@@ -35,7 +35,6 @@ local function tester(path)
 end
 
 M.setup = function(opts)
-  print('calling setup with ' .. vim.inspect(opts))
 
   local status, project_defs = pcall(require, 'project_defs')
   if not status then
@@ -44,14 +43,8 @@ M.setup = function(opts)
   end
 
   defs = project_defs
-  print('did find defs ' .. vim.inspect(project_defs))
-
   cleanup_defs()
 
-  print('clean defs are ' .. vim.inspect(defs))
-
-  tester('~/work/mdbook-i18n-helpers/i18n-helpers/src/lib.rs')
-  tester('~/work/mdbook-i18n-helpers')
 end
 
 local function is_absolute_path(path)
@@ -135,11 +128,12 @@ M.get_project_from_path = function(path)
 end
 
 M.get_project_paths = function(path)
+  path = find_path(path)
   local project, prefix, from_common_root = M.get_project_from_path(path)
 
   -- Project not found
   if project == nil then
-    error('No project found for', path)
+    print('No project found for', path)
     return
   end
 
