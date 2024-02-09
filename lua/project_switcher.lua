@@ -120,7 +120,11 @@ M.get_project_from_path = function(path)
       and string.sub(path, 1, common_root:len()) == common_root
     then
       local rest = string.sub(path, common_root:len() + 1)
-      return string.sub(rest, string.find(rest, '/')), common_root, true
+      local from = string.find(rest, '/')
+      if from == nil then
+        return rest, common_root, true
+      end
+      return string.sub(rest, 1, from - 1), common_root, true
     end
   end
 
